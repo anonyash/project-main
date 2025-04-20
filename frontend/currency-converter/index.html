@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Currency Converter</h1>
+        <div class="converter">
+            <div class="input-group">
+                <input type="number" id="amount" placeholder="Enter amount" value="1">
+                <select id="from-currency">
+                    <option value="INR">INR</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                    <option value="JPY">JPY</option>
+                    <option value="CAD">CAD</option>
+                    <option value="CHF">CHF</option>
+                    <option value="CNY">CNY</option>
+                </select>
+            </div>
+            <div class="swap-button">
+                <button id="swap-btn">⇄</button>
+            </div>
+            <div class="input-group">
+                <input type="number" id="result" readonly>
+                <select id="to-currency">
+                    <option value="USD">USD</option>
+                    <option value="INR">INR</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                    <option value="JPY">JPY</option>
+                    <option value="CAD">CAD</option>
+                    <option value="CHF">CHF</option>
+                    <option value="CNY">CNY</option>
+                </select>
+            </div>
+        </div>
+        <div class="status" id="status">Using saved exchange rates</div>
+        <div class="last-fetch" id="last-fetch">Last updated: Never</div>
+        <div class="fetch-button">
+            <button id="fetch-rates-btn">Update Rates</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
