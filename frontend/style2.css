@@ -1,0 +1,139 @@
+html{
+    background-color:#e9fcff;
+    color: rgb(105, 114, 117);
+    height: -webkit-fill-available;
+    
+}
+
+
+body {
+    font-family: "Source Code Pro";
+    font-size: large;
+    height: -webkit-fill-available;
+    
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 0px;
+}
+
+.btns{
+    display: flex;
+    gap: 17px;
+}
+
+._nav {
+    background-color:#6aafb7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 4px 0px; */
+    position: fixed;
+    border: solid;
+    border-color: #6aafb7;
+    width: -webkit-fill-available;
+    
+}
+
+.logo {
+    font-weight: bold;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+    gap: 5px;
+    padding-inline-start: 5px;
+    /* box-shadow: 3px 4px 0px 4px rgba(0, 0, 0, 1.1), 0px 0px 0px 3px rgba(1, 0, 0, 2.08); */
+}
+
+.menu a {
+    padding: 20px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    transition: color 0.3s ease;
+}
+.project-list a {
+    padding: 20px;
+    text-decoration: none;
+    color: rgb(105, 114, 117);
+    transition: color 0.2s ease;
+}
+.project-listli a:hover{
+    background-color: #6aafb7;
+    color: rgb(255, 255, 255);
+}
+
+.menu a.active{
+    background-color: #e9fcff;
+    color: rgb(105, 114, 117);
+
+}
+
+.menu a:hover{
+    background-color: #e9fcff;
+    color: rgb(105, 114, 117);
+}
+
+.block {
+    /* padding: 40px; */
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 40px;
+    /* padding-top: 90px; */
+}
+.home {
+      /* padding: 40px; */
+      padding-left: 40px;
+      padding-right: 40px;
+      padding-bottom: 40px;
+      padding-top: 90px;
+
+}
+
+section h1, section h2, section h3 {
+    margin-bottom: 20px;
+}
+.project-listli {
+    list-style: none;
+    display: grid;
+    padding: 0;
+    background-color: #ffffff;
+    border-radius: 8px;
+    /* box-shadow: 1px 4px 6px rgba(0, 0, 0, 1.1), 1px 2px 4px rgba(1, 0, 0, 2.08); */
+    /* box-shadow: 3px 4px 0px 4px rgba(0, 0, 0, 1.1), 0px 0px 0px 3px rgba(1, 0, 0, 2.08); */
+    box-shadow: 3px 4px 0px 4px rgb(106 175 183), 0px 0px 0px 3px rgb(106 175 183);
+    padding: 10px;
+}
+.project-list li {
+    margin-bottom: 30px;
+}
+
+/* .project-list li {
+    margin-bottom: 30px;
+}
+.project-list {
+    list-style: none;
+    padding: 0;
+}
+
+.project-list li {
+    margin-bottom: 30px;
+} */
+
+.social-icons {
+    margin-top: 20px;
+    font-size: 24px;
+}
+
+/* Add your social media icon styles here */
+
+/* Add more styles as needed */
