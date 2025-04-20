@@ -33,6 +33,13 @@ const balance = document.getElementById(
   let currentCurrency = localStorage.getItem('selectedCurrency') || 'INR';
   let baseCurrency = 'INR'; // The currency in which transactions are stored
 
+  // Global chart variables
+  let barChart = null;
+  let pieChart = null;
+  let labels = [];
+  let data = [];
+  let color = [];
+
   // Function to update all displayed amounts
   function updateAllAmounts() {
       console.log("updateAllAmounts called");
@@ -107,126 +114,69 @@ const balance = document.getElementById(
     console.log("Conversion result:", result);
     return result;
   }
-
+  
   // Initialize currency converter
   document.addEventListener('DOMContentLoaded', async () => {
+    console.log("DOMContentLoaded event fired");
     const currencySelect = document.getElementById('currency-select');
     const transactionCurrencySelect = document.getElementById('transaction-currency');
     
     // Set initial currency in dropdowns to INR
-    currencySelect.value = 'INR';
+    // currencySelect.value = 'INR';
     transactionCurrencySelect.value = 'INR';
     
-    // Initialize chart data arrays
-    const labels = [];
-    const data = [];
-
-    // Initialize charts
-    const barChartCtx = document.getElementById('barChart').getContext('2d');
-    const pieChartCtx = document.getElementById('pieChart').getContext('2d');
-
-    const barChart = new Chart(barChartCtx, {
-        type: 'bar',
-        data: { 
-            labels: labels, 
-            datasets: [{ 
-                label: 'Values', 
-                data: data, 
-                backgroundColor: ['red', 'blue', 'green', 'yellow', 'purple'] 
-            }] 
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    const pieChart = new Chart(pieChartCtx, {
-        type: 'pie',
-        data: { 
-            labels: labels, 
-            datasets: [{ 
-                data: data, 
-                backgroundColor: ['red', 'blue', 'green', 'yellow', 'purple'] 
-            }] 
-        },
-        options: {
-            responsive: true
-        }
-    });
     
+  // init chart
+    chartinit()
+
+
+    
+
+
     // Add event listener for currency change
     currencySelect.addEventListener('change', async () => {
-      await changeCurrency(currencySelect.value);
-      updateChartData();
+        console.log("Currency changed, updating charts...");
+        await changeCurrency(currencySelect.value);
+        updateChartData();
     });
 
     // Initialize exchange rates on page load
     const savedRates = JSON.parse(localStorage.getItem('exchangeRates'));
     if (savedRates) {
+        console.log("Using saved exchange rates:", savedRates);
         window.exchangeRates = savedRates;
     } else {
-        // If no saved rates, try to fetch new ones
+        console.log("No saved rates found, attempting to fetch new ones");
         try {
             const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
             if (response.ok) {
                 const data = await response.json();
+                console.log("Fetched new exchange rates:", data.rates);
                 window.exchangeRates = data.rates;
                 localStorage.setItem('exchangeRates', JSON.stringify(data.rates));
                 localStorage.setItem('ratesLastUpdated', Date.now());
             } else {
-                // Use fallback rates if API fails
+                console.log("API fetch failed, using fallback rates");
                 window.exchangeRates = fallbackRates;
                 localStorage.setItem('exchangeRates', JSON.stringify(fallbackRates));
             }
         } catch (error) {
             console.error('Error fetching exchange rates:', error);
-            // Use fallback rates if API fails
+            console.log("Using fallback rates due to error");
             window.exchangeRates = fallbackRates;
             localStorage.setItem('exchangeRates', JSON.stringify(fallbackRates));
         }
     }
     
     // Initial currency setup
-    // await window.fetchExchangeRates();
+    console.log("Performing initial currency setup");
     updateAllAmounts();
     updateChartData();
   });
 
-  // Function to update chart data
-  function updateChartData() {
-    console.log("updateChartData called");
-    // Clear existing data
-    labels.length = 0;
-    data.length = 0;
 
-    // Group transactions by category and sum amounts
-    const categoryTotals = {};
-    transactions.forEach(transaction => {
-      const convertedAmount = window.convertCurrency(Math.abs(transaction.amount), baseCurrency, currentCurrency);
-      if (!categoryTotals[transaction.text]) {
-        categoryTotals[transaction.text] = 0;
-      }
-      categoryTotals[transaction.text] += convertedAmount;
-    });
-
-    console.log("Category totals:", categoryTotals);
-
-    // Add data to chart arrays
-    Object.entries(categoryTotals).forEach(([category, total]) => {
-      labels.push(category);
-      data.push(total);
-    });
-
-    console.log("Updated chart data:", { labels, data });
-    console.log("updateChartData completed");
-  }
-
-  // Function to change currency globally
+ 
+// Function to change currency globally
   async function changeCurrency(newCurrency) {
     console.log("changeCurrency called with:", newCurrency);
     if (newCurrency !== currentCurrency) {
@@ -299,6 +249,72 @@ const balance = document.getElementById(
     }
   }
   
+// Function to update chart data
+function updateChartData() {
+  console.log("updateChartData called");
+  console.log("Current transactions:", transactions);
+  
+  // Clear existing data
+  labels.length = 0;
+  data.length = 0;
+
+  console.log("Cleared chart data arrays");
+
+  // Group transactions by category and sum amounts
+  const categoryTotals = {};
+  transactions.forEach(transaction => {
+      console.log("Processing transaction:", transaction);
+      const convertedAmount = window.convertCurrency(Math.abs(transaction.amount), baseCurrency, currentCurrency);
+      console.log("Converted amount:", convertedAmount);
+      
+      if (!categoryTotals[transaction.text]) {
+          categoryTotals[transaction.text] = 0;
+      }
+      categoryTotals[transaction.text] += convertedAmount;
+  });
+
+  console.log("Category totals:", categoryTotals);
+
+  // Add data to chart arrays
+  Object.entries(categoryTotals).forEach(([category, total]) => {
+      console.log("Adding to chart:", { category, total });
+      labels.push(category);
+      data.push(total);
+      // color.push(backgroundColor);
+  });
+
+  console.log("Final chart data:", { labels, data });
+  
+  // Update charts if they exist
+  if (barChart && pieChart) {
+      console.log("Updating charts with new data");
+      
+      try {
+          // Update bar chart
+          barChart.data.labels = labels;
+          barChart.data.datasets[0].data = data;
+          barChart.update();
+          
+          // Update pie chart
+          pieChart.data.labels = labels;
+          pieChart.data.datasets[0].data = data;
+          // pieChart.data.color = color;
+          pieChart.update();
+          
+          console.log("Charts updated successfully");
+      } catch (error) {
+          console.error("Error updating charts:", error);
+      }
+  } else {
+      console.error("Charts not initialized properly");
+  }
+  
+  console.log("updateChartData completed");
+}
+
+
+
+
   
   //5.5
   //Generate Random ID
@@ -438,7 +454,8 @@ const balance = document.getElementById(
     sig2 = transactions.map(
         (transaction) => transaction.sig
     );
-
+      chartinit()
+      updateChartData()
       console.log(sig2)
       console.log(expense)
       balance.innerText=`${getCurrencySymbol(currentCurrency)}${convertCurrency(total, baseCurrency, currentCurrency)}`;
@@ -466,6 +483,92 @@ const balance = document.getElementById(
     console.log("Transactions saved to localStorage");
   }
   
+
+
+// Initialize charts
+function chartinit(){
+  console.log("Initializing charts...");
+  let sign3 = sig[0] == "+"? 1 : 0 ;  
+  // Initialize chart data arrays
+  labels = [];
+  data = [];
+  console.log("Initial chart data arrays:", { labels, data });
+ 
+  const barChartCtx = document.getElementById('barChart');
+  const pieChartCtx = document.getElementById('pieChart');
+  
+  if (!barChartCtx || !pieChartCtx) {
+      console.error("Chart canvas elements not found!");
+      return;
+  }
+  
+  console.log("Chart contexts found:", { barChartCtx, pieChartCtx });
+ 
+  try {
+      // Initialize bar chart
+      barChart = new Chart(barChartCtx.getContext('2d'), {
+          type: 'bar',
+          data: { 
+              labels: labels, 
+              datasets: [{ 
+                  label: 'Values', 
+                  data: data, 
+                  backgroundColor: ['red','green'] //add shades of green and blue
+              }] 
+          },
+          options: {
+              responsive: true,
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+      });
+      console.log("Bar chart initialized:", barChart);
+ 
+      // Initialize pie chart
+      pieChart = new Chart(pieChartCtx.getContext('2d'), {
+          type: 'pie',
+          data: { 
+              labels: labels, 
+              datasets: [{ 
+                  data: data, 
+                  backgroundColor:  ['green','red' ]  //add shades of green and blue
+              }] 
+          },
+          options: {
+              responsive: true
+          }
+      });
+      console.log("Pie chart initialized:", pieChart);
+  } catch (error) {
+      console.error("Error initializing charts:", error);
+  }
+ 
+ 
+ 
+   }
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   //3
   
   //Init App
