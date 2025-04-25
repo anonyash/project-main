@@ -456,8 +456,7 @@
     /* border-radius: 20px; */
     /* box-shadow: 0px 0px 0px 4px #316064; */
     justify-self: anchor-center;
-    /* display: inline-flex
-; */
+    display: flex;
     gap: 66px;
     justify-content: space-evenly;
 
@@ -465,6 +464,7 @@
 
 .settings-section {
     margin-bottom: 30px;
+    width: max-content;
     padding: 20px;
     background-color: #132222;
     border-radius: 10px;
