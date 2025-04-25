@@ -31,12 +31,12 @@
       <div class="navbar">
         <nav  class="_nav">
             <ul class="menu">
-                <li style="background-color: #132222;"><img class="navsvg" src="navbar.svg" alt=""></li>
+                <li style="background-color: #132222;"><img class="navsvg" src="exptracker.svg" alt=""></li>
                 
                 <li ><a href="index.html">Dashboard</a></li>
-                <li ><a href="index.html">Report</a></li>
-                <li ><a href="index.html">Statistics</a></li>
-                <li ><a href="index.html">Accounts</a></li>
+                <li ><a href="report.html">Report</a></li>
+                <li ><a href="statistics.html">Statistics</a></li>
+                <li ><a href="accounts.html">Accounts</a></li>
                 <li ><a href="settings.html">Setting</a></li>
                 <!-- <li ><a href="projects.html">Projects</a></li>
                 <li ><a href="about.html">About</a></li> -->
@@ -133,22 +133,23 @@
       </form>
       </div>
       </div>  
-     
+      <div class="chart-container">
+        <div>
+            <h3>Bar Chart</h3>
+            <canvas id="barChart"></canvas>
+        </div>
+        <div>
+            <h3>Pie Chart</h3>
+            <canvas id="pieChart"></canvas>
+        </div>
+      </div>
     
     </div>
+    
     
 
     </div>
-    <div class="chart-container">
-      <div>
-          <h3>Bar Chart</h3>
-          <canvas id="barChart"></canvas>
-      </div>
-      <div>
-          <h3>Pie Chart</h3>
-          <canvas id="pieChart"></canvas>
-      </div>
-    </div>
+    
     </div>
     <!-- JavaYscript Project  -->
     <script src="script.js"></script>

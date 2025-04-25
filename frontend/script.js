@@ -68,7 +68,7 @@ const balance = document.getElementById(
           const item = document.createElement('li');
           item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
           item.innerHTML = `
-              ${transaction.text} <span>${transaction.amount < 0 ? '-' : '+'}${getCurrencySymbol(currentCurrency)}${convertedAmount.toFixed(2)}</span>
+              ${transaction.text} <span>${transaction.amount < 0 ? '-' : '+'}${convertedAmount.toFixed(2)}</span>
               <button class="delete-btn" onclick="removeTransaction(${transaction.id})">x</button>
           `;
           list.appendChild(item);
@@ -409,10 +409,11 @@ function updateChartData() {
 
 
   let togg = document.getElementById('expen');
-  let tru = togg.checked
-  let sig = tru? "-" : "+";
+    let tru = togg.checked
+    let sig = tru? "-" : "+";
   //Add Trasactions to DOM list
   function addTransactionDOM(transaction) {
+    
     //GET sign
     const sign = sig;
     const item = document.createElement("li");
@@ -513,7 +514,7 @@ function chartinit(){
               datasets: [{ 
                   label: 'Values', 
                   data: data, 
-                  backgroundColor: ['red','green'] //add shades of green and blue
+                  backgroundColor:  ['rgb(32, 198, 96)','rgb(89, 53, 219)','rgb(198, 93, 32)','rgb(179, 198, 32)','rgb(198, 32, 123)' ]   //add shades of green and blue
               }] 
           },
           options: {
@@ -534,8 +535,9 @@ function chartinit(){
               labels: labels, 
               datasets: [{ 
                   data: data, 
-                  backgroundColor:  ['green','red' ]  //add shades of green and blue
-              }] 
+                  
+                  backgroundColor:  ['rgb(32, 198, 96)','rgb(89, 53, 219)','rgb(198, 93, 32)','rgb(179, 198, 32)','rgb(198, 32, 123)' ]  //add shades of green and blue
+              }]
           },
           options: {
               responsive: true
@@ -550,25 +552,6 @@ function chartinit(){
  
    }
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   //3
   
   //Init App
@@ -577,10 +560,8 @@ function chartinit(){
     list.innerHTML = "";
     updateValues();
     transactions.forEach(updTransactionDOM);
-    
-    
   }
-  
+
   Init();
   
   form.addEventListener('submit',addTransaction);
