@@ -1,9 +1,14 @@
-// Load saved settings
+// Load saved settings  
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log("++ DOMContentLoaded event fired ++ (settings.js)");
     // Load currency settings
-    const savedCurrency = localStorage.getItem('selectedCurrency') || 'INR';
+    const savedCurrency = localStorage.getItem('selectedCurrency') ||  'INR' ;
     document.getElementById('default-currency').value = savedCurrency;
     document.getElementById('currency-select').value = savedCurrency;
+    console.log(savedCurrency)
+
+    // let defaultCurrencyElement = document.getElementById('default-currency');
+    // localStorage.setItem('defaultCurrencyElement', defaultCurrencyElement);
 
     // Load theme settings
     const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -16,43 +21,59 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('import-data').addEventListener('click', importData);
     document.getElementById('clear-data').addEventListener('click', clearData);
     document.getElementById('update-rates-btn').addEventListener('click', updateExchangeRates);
-    document.getElementById('currency-select').addEventListener('change', handleCurrencyChange);
+    document.getElementById('default-currency').addEventListener('change', handleCurrencyChange);
 
     // Initialize exchange rates
-    await window.fetchExchangeRates();
+    // await window.fetchExchangeRates();
+    // await window.updateExchangeRates();
+    document.getElementById("date").textContent ="Rates last updated: \n"+ localStorage.getItem('ratesLastUpdated');
 });
 
 // Handle currency change
 async function handleCurrencyChange() {
-    const currency = document.getElementById('currency-select').value;
+    console.log("> handleCurrencyChange() called")
+    const currency = document.getElementById('default-currency').value;
+    console.log('default-currency: ',currency)
     await window.changeCurrency(currency);
 }
 
 // Update exchange rates
 async function updateExchangeRates() {
+    console.log("> updateExchangeRates() called")
     const updateBtn = document.getElementById('update-rates-btn');
     updateBtn.disabled = true;
     updateBtn.textContent = 'Updating...';
     
     try {
-        const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+        const response = await fetch('https://api.exchangerate-api.com/v4/latest/INR', {cache: "no-store"});
+        document.getElementById("date").textContent ="Rates last updated: \n"+ localStorage.getItem('ratesLastUpdated');
         if (!response.ok) throw new Error('Failed to fetch rates');
+        
         
         const data = await response.json();
         // Store rates in localStorage
         saveRates(data.rates);
         // Update global rates
         window.exchangeRates = data.rates;
-        
+        localStorage.setItem('ratesLastUpdated', new Date().toLocaleString());
+        console.log("rates last updated: "+ localStorage.getItem('ratesLastUpdated'));
+        document.getElementById("date").textContent ="Rates last updated: \n"+ localStorage.getItem('ratesLastUpdated');
         updateBtn.textContent = 'Rates Updated!';
         setTimeout(() => {
             updateBtn.textContent = 'Update Exchange Rates';
             updateBtn.disabled = false;
-        }, 2000);
+        }, 1000);
         
         return true;
     } catch (error) {
         console.error('Error fetching exchange rates:', error);
+        document.getElementById("date").textContent ="Rates last updated: \n"+ localStorage.getItem('ratesLastUpdated');
+        // let lastdate = document.getElementById("date").textContent = document.getElementById("date").textContent;
+        document.getElementById("error").textContent =  "Error fetching exchange rates" ;
+        setTimeout(() => {
+            document.getElementById("error").textContent =  " "
+            // document.getElementById("date").textContent = lastdate ;
+            }, 2000);
         // Use saved rates if available
         const savedRates = loadRates();
         if (savedRates) {
@@ -79,12 +100,15 @@ async function updateExchangeRates() {
 
 // Function to save rates to localStorage
 function saveRates(rates) {
+    console.log("> saveRates() called")
+    console.log(rates)
     localStorage.setItem('exchangeRates', JSON.stringify(rates));
     localStorage.setItem('ratesLastUpdated', Date.now());
 }
 
 // Function to load rates from localStorage
 function loadRates() {
+    console.log("> loadRates() called")
     const storedRates = localStorage.getItem('exchangeRates');
     const lastUpdated = localStorage.getItem('ratesLastUpdated');
     
@@ -98,26 +122,31 @@ function loadRates() {
 }
 
 // Fallback exchange rates (as of a recent date)
-const fallbackRates = {
-    USD: 1,
-    EUR: 0.92,
-    GBP: 0.79,
-    JPY: 151.37,
-    INR: 83.25,
-    CAD: 1.35,
-    CHF: 0.90,
-    CNY: 7.24
+let fallbackRates = {
+    INR: 1,
+    USD: 0.0117,
+    EUR: 0.0103,
+    GBP: 0.00876,
+    JPY: 1.67,
+    CAD: 0.0163,
+    CHF: 0.00968,
+    CNY: 0.0854
 };
 
 // Save currency settings
 function saveCurrencySettings() {
-    const defaultCurrency = document.getElementById('default-currency').value;
+    console.log("> saveCurrencySettings() called")
+    let defaultCurrency = document.getElementById('default-currency').value;
     const displayCurrency = document.getElementById('currency-select').value;
-    
+    // const transactionCurrency = document.getElementById('transaction-currency').value;
+    console.log(defaultCurrency)
     localStorage.setItem('selectedCurrency', defaultCurrency);
+    localStorage.setItem('defaultCurrency', defaultCurrency);
     localStorage.setItem('displayCurrency', displayCurrency);
+    // localStorage.setItem('transCurrency', transactionCurrency);
     
     alert('Currency settings saved!');
+    // document.getElementById('transaction-currency').value = "USD";
 }
 
 // Save theme settings
@@ -141,6 +170,7 @@ function saveThemeSettings() {
 
 // Export data
 function exportData() {
+    console.log("> exportData() called")
     const transactions = JSON.parse(localStorage.getItem('transactions') || '[]');
     const data = {
         transactions: transactions,
@@ -166,6 +196,7 @@ function exportData() {
 
 // Import data
 function importData() {
+    console.log("> importData() called")
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json';
@@ -216,6 +247,7 @@ function importData() {
 
 // Clear all data
 function clearData() {
+    console.log("> clearData() called")
     if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
         localStorage.clear();
         alert('All data has been cleared.');

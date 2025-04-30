@@ -110,7 +110,26 @@
 
           <div class="form-control">
               <label for="text">Category</label>
+              <div style="display: flex; flex-direction: row; gap: 5px; justify-content: space-between;">
               <input type="text" id="text" placeholder="Enter Category...."/>
+              <select id="category">
+                <option value="1">Custom category</option>
+               <optgroup label="essentials">
+                <option value="Groceries">Groceries</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Rent">Rent</option>
+                <option value="Transport">Transport</option>
+                </optgroup>
+               <optgroup label="personal">
+                <option value="Shopping">Shopping</option>
+                <option value="Dining out">Dining out</option>
+                </optgroup>
+                <option value="JPY">JPY (¥)</option>
+                <option value="CAD">CAD (C$)</option>
+                <option value="CHF">CHF (Fr)</option>
+                <option value="CNY">CNY (¥)</option>
+            </select>
+              </div>
           </div>
 
           <div class="form-control">
@@ -134,10 +153,10 @@
       </div>
       </div>  
       <div class="chart-container">
-        <div>
+        <!-- <div>
             <h3>Bar Chart</h3>
             <canvas id="barChart"></canvas>
-        </div>
+        </div> -->
         <div>
             <h3>Pie Chart</h3>
             <canvas id="pieChart"></canvas>
@@ -152,8 +171,13 @@
     
     </div>
     <!-- JavaYscript Project  -->
-    <script src="script.js"></script>
-    <script src="currency-converter/script.js"></script>
+    <!-- <script src="settings.js"></script> -->
+     <script src="script.js"></script>
+     <!-- <script src="settings.js"></script> -->
+    
+    
+    
+    <!-- <script src="currency-converter/script.js"></script> -->
     <!-- <script src="datavis.js"></script> -->
     
   </body>

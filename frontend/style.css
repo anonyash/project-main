@@ -468,6 +468,8 @@
     padding: 20px;
     background-color: #132222;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 .settings-section h3 {
@@ -502,14 +504,27 @@
     color: #fff;
 }
 
-.form-control select {
-    width: 100%;
+.form-control #category {
+    width: 10%;
     padding: 8px;
     border-radius: 4px;
     background-color: #316064;
     color: white;
     border: 1px solid #1c3638;
+    margin: 0px;
 }
+/* .form-control #Categorytext {
+  width: 80%;
+  
+} */ 
+
+input:disabled {
+  cursor:not-allowed ;
+  background-color: rgb(255, 255, 255);
+  color: rgba(25, 25, 25, 0.681);
+}
+
+
 
 .form-control select:focus {
     outline: none;
