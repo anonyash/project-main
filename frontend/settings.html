@@ -34,7 +34,7 @@
           <div class="settings-section">
             <h3>Currency Settings</h3>
             <div class="form-control">
-              <label for="default-currency">Default Currency</label>
+              <label for="default-currency">Display Currency</label><!--Actual Default Currency check settings.js:1-->
               <select id="default-currency">
                 <option value="INR">INR (₹)</option>
                 <option value="USD">USD ($)</option>
@@ -47,9 +47,9 @@
               </select>
             </div>
             <div class="form-control">
-              <label for="currency-select">Display Currency</label>
-              <select id="currency-select">
-                <option value="INR">INR (₹)</option>
+              <label for="currency-select">Default Currency</label><!--Actual Display Currency check settings.js:1-->
+              <select id="currency-select" disabled>
+                <option selected value="INR">INR (₹)</option>
                 <option value="USD">USD ($)</option>
                 <option value="EUR">EUR (€)</option>
                 <option value="GBP">GBP (£)</option>

@@ -1,10 +1,12 @@
+//  (do this only when you're integrating basecurrency changing feature else it's unnecessary) Name all the defaultCurrency variables to displayCurrency and all the current displayCurrency variables to baseCurrency  
+
 // Load saved settings  
 document.addEventListener('DOMContentLoaded', async () => {
     console.log("++ DOMContentLoaded event fired ++ (settings.js)");
     // Load currency settings
     const savedCurrency = localStorage.getItem('selectedCurrency') ||  'INR' ;
     document.getElementById('default-currency').value = savedCurrency;
-    document.getElementById('currency-select').value = savedCurrency;
+    // document.getElementById('currency-select').value = savedCurrency;
     console.log(savedCurrency)
 
     // let defaultCurrencyElement = document.getElementById('default-currency');
@@ -33,6 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function handleCurrencyChange() {
     console.log("> handleCurrencyChange() called")
     const currency = document.getElementById('default-currency').value;
+    // document.getElementById('currency-select').value = currency;
     console.log('default-currency: ',currency)
     await window.changeCurrency(currency);
 }
@@ -137,12 +140,12 @@ let fallbackRates = {
 function saveCurrencySettings() {
     console.log("> saveCurrencySettings() called")
     let defaultCurrency = document.getElementById('default-currency').value;
-    const displayCurrency = document.getElementById('currency-select').value;
+    // let displayCurrency = document.getElementById('currency-select').value;
     // const transactionCurrency = document.getElementById('transaction-currency').value;
     console.log(defaultCurrency)
     localStorage.setItem('selectedCurrency', defaultCurrency);
     localStorage.setItem('defaultCurrency', defaultCurrency);
-    localStorage.setItem('displayCurrency', displayCurrency);
+    // localStorage.setItem('displayCurrency', displayCurrency);
     // localStorage.setItem('transCurrency', transactionCurrency);
     
     alert('Currency settings saved!');
@@ -176,7 +179,7 @@ function exportData() {
         transactions: transactions,
         settings: {
             currency: localStorage.getItem('selectedCurrency'),
-            displayCurrency: localStorage.getItem('displayCurrency'),
+            displayCurrency: localStorage.getItem('defaultCurrency'),
             theme: localStorage.getItem('theme'),
             exchangeRates: localStorage.getItem('exchangeRates'),
             ratesLastUpdated: localStorage.getItem('ratesLastUpdated')
@@ -218,7 +221,7 @@ function importData() {
                         localStorage.setItem('selectedCurrency', data.settings.currency);
                     }
                     if (data.settings.displayCurrency) {
-                        localStorage.setItem('displayCurrency', data.settings.displayCurrency);
+                        localStorage.setItem('defaultCurrency', data.settings.displayCurrency);
                     }
                     if (data.settings.theme) {
                         localStorage.setItem('theme', data.settings.theme);

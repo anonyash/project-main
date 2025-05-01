@@ -1,4 +1,5 @@
 //1
+// import  Chart  from './node_modules/chart.js/dist/chart.esm.js';
 const balance = document.getElementById(
     "balance"
   );
@@ -10,7 +11,7 @@ const balance = document.getElementById(
   );
   const list = document.getElementById("list");
   const form = document.getElementById("form");
-  const text = document.getElementById("text");
+  let text = {value:""};
   const amount = document.getElementById("amount");
   // const dummyTransactions = [
   //   { id: 1, text: "Flower", amount: -20 },
@@ -36,9 +37,25 @@ const balance = document.getElementById(
   let baseCurrency = 'INR'; //localStorage.getItem('defaultCurrency') ;  //'INR'; // The currency in which transactions are stored
   let transactionCurrency = document.getElementById('transaction-currency')
   transactionCurrency.value = defaultCurrency;
-  // document.getElementById('transaction-currency').value = defaultCurrency;
+  let sig2
+  let categorytext = document.getElementsByClassName('categorytext')
+  let category = document.getElementsByClassName("category")
+
+  
   console.log("defaultCurrency: ", defaultCurrency)
   console.log("baseCurrency: " , baseCurrency)
+  console.log(text)
+  console.log(category)
+  console.log(categorytext)
+  console.log("category value: " + category[0].value)
+  console.log("category value: " + category[1].value)
+  console.log( "categorytext: "+ categorytext[0].value )
+  console.log( "categorytext: "+ categorytext[1].value )
+
+
+
+  // document.getElementById('transaction-currency').value = defaultCurrency;
+  
   // console.log("defaultCurrencyElement: ", transactionCurrencySelect)
   // console.log(transactionCurrency)
   // Global chart variables
@@ -208,12 +225,17 @@ const balance = document.getElementById(
 
   //Add Transaction
   function addTransaction(e){
-    console.log(e)
+    e.preventDefault();
+
     console.log("--------------------------------------------------");
     console.log("---------------NEW TRANSACTION--------------------");
     console.log("--------------------------------------------------");
     console.log("> addTransaction() called");
-    e.preventDefault();
+    console.log(e)
+    console.log(e.target[3].value)
+    console.log(e.target[1].value)
+    console.log(amount.value)
+    document.getElementById('expen').checked? text.value = e.target[3].value:text.value = e.target[1].value ;
     if(text.value.trim() === '' || amount.value.trim() === ''){
       console.log("   Validation failed: empty fields");
       alert('please add category and amount')
@@ -275,6 +297,7 @@ const balance = document.getElementById(
       
       text.value='';
       amount.value='';
+      toggl()
       console.log("   addTransaction completed");
     }
   }
@@ -359,11 +382,27 @@ function updateChartData() {
   
   
   function toggl(){
-  let togg = document.getElementById('expen');
-  console.log(togg.checked);
+  console.log("> toggl() called")
+
+  text.value ="";
+  let exp = document.getElementById('expen');
+  let inc = document.getElementById('incom');
+  console.log(exp.checked);
+  category[0].value = "1";
+  category[1].value = "1";
+  categorytext[0].value = "";
+  categorytext[1].value = "";
+  categorytext[0].disabled = false ;
+  categorytext[1].disabled = false ;
+
+  // exp.checked? category[0].value = "1":category[1].value = "1";
+  // exp.checked? categorytext[0].value = "":categorytext[1].value = "";
+  // exp.checked? categorytext[0].disabled = false :categorytext[1].disabled = false ;
+  console.log(text)
+  // categorytext[0].value
   }
 
-  let sig2
+  
 
   function updTransactionDOM(transaction) {
     console.log("updTransactionDOM() called");
@@ -597,31 +636,69 @@ function chartinit(){
 
 
   //  let text = document.getElementById('text')
-   let category = document.getElementById("category")
-   console.log(category.value)
-   console.log("category value: " + category.value)
-   console.log( "text: "+ text.value )
+  //  let category = document.getElementById("category")
+  
+
    
-   category.addEventListener( 'change' , function(event){ 
-       console.log( event);
-       CategoryText(category,event);                        
-   })
-   
-   function CategoryText(option,event){
-       category.value = event.target.value;
-       console.log("category: "+category.value)
+  //  console.log(category.value)
+  
+  //  console.log("category value: " + category.value)
+  //  console.log( "text: "+ text.value )
+
+category[0].addEventListener( 'change' , function(event){ 
+    console.log( event);
+    CategoryText(category[0],category[0],categorytext[0],event);                        
+})
+
+
+category[1].addEventListener( 'change' , function(event){ 
+    console.log( event);
+    CategoryText(category[1],category[1],categorytext[1],event);                        
+})
+
+function CategoryText(ncat,option,tcat,event){
+  console.log('> CategoryText() called')
+  console.log(text)
+  // console.log(ncat[0].value.label)
+  ncat.value = event.target.value;
+  console.log("category: "+ncat.value)
+
+
+  if (option.value == '1'){
+      tcat.value = "";
+      text.value = tcat.value;
+      console.log("Enter custom category...")
+      tcat.disabled = false;
+  }else{
+      tcat.value = ncat.value;
+      text.value = ncat.value;
+      console.log("selected option: "+ tcat.value)
+      // console.log("label: ", ncat.value.label)
+      tcat.disabled = true;
+      console.log(text)
+      console.log(ncat.value)
+  }
+}
+
+
+
+
+
+// function CategoryText(option,event){
+//        category.value = event.target.value;
+//        console.log("category: "+category.value)
        
-       if (option.value == '1'){
-           text.value = "";
-           console.log("Enter custom category...")
-           text.disabled = false;
-       }else{
-           text.value = category.value;
-           console.log("selected option: "+ text.value)
-           console.log("label: ", category.value.label)
-           text.disabled = true;
-       }
-   }
+//        if (option.value == '1'){
+//            text.value = "";
+//            console.log("Enter custom category...")
+//            text.disabled = false;
+//        }else{
+//            text.value = category.value;
+//            console.log("selected option: "+ text.value)
+//            console.log("label: ", category.value.label)
+//            text.disabled = true;
+//        }
+// }
 
 
 
