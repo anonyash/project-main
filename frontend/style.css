@@ -30,9 +30,25 @@
   }
   
   .navbar{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+
     background-color: #132222;
     /* height: -webkit-fill-available; */
     width: auto;
+  }
+
+
+  .navlogo{
+    padding: 10px 30px 10px 10px;
+    gap: 14px;
+    display: flex;
+    place-items: center;
+    border-right: solid #316064 2.5px;
+    border-radius: 40px;
+    margin: 0px;
+
   }
   
   
@@ -69,6 +85,7 @@
     margin: 0px;
     padding: 0px;
     width: -webkit-fill-available;
+    height: -webkit-fill-available;
     /* align-items: anchor-center; */
     justify-content: flex-start;
     list-style: none;
@@ -84,6 +101,19 @@
     
   
   }
+  .navsvglogo{
+    /* height: 40px; */
+    height: 50px;
+    width: 196px;
+
+  }
+
+  .menu li.active{
+    background-color: #1d3739;
+    color: rgb(105, 114, 117);
+
+}
+
 
   .chart-container { 
     /* display: flex;
