@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('default-currency').value = savedCurrency;
     // document.getElementById('currency-select').value = savedCurrency;
     console.log(savedCurrency)
+    updateRates()
 
     // let defaultCurrencyElement = document.getElementById('default-currency');
     // localStorage.setItem('defaultCurrencyElement', defaultCurrencyElement);
@@ -15,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Load theme settings
     const savedTheme = localStorage.getItem('theme') || 'dark';
     document.getElementById('theme-select').value = savedTheme;
-
+    
     // Add event listeners
     document.getElementById('save-currency').addEventListener('click', saveCurrencySettings);
     document.getElementById('save-theme').addEventListener('click', saveThemeSettings);
@@ -30,6 +31,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     // await window.updateExchangeRates();
     document.getElementById("date").textContent ="Rates last updated: \n"+ localStorage.getItem('ratesLastUpdated');
 });
+
+
+function updateRates() {
+    let rates1 = JSON.parse(localStorage.getItem('exchangeRates'));
+    let rates2 = fallbackRates;
+    console.log('current rates: ', rates1.INR)
+    console.log('current rates: ', rates1)
+    console.log('current fallbackrates: ', rates2.INR)
+    if (rates1.INR !== rates2.INR){
+        localStorage.setItem('exchangeRates', JSON.stringify(fallbackRates));
+        console.log(localStorage.getItem('exchangeRates'))
+    }
+
+
+}
+
+
+
+
 
 // Handle currency change
 async function handleCurrencyChange() {
